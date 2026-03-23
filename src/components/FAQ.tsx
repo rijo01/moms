@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 const faqs = [
   {
     q: "Vad är moms?",
@@ -29,45 +25,39 @@ const faqs = [
   },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 export default function FAQ() {
-  const [open, setOpen] = useState<number | null>(null);
-
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((f) => ({
-      "@type": "Question",
-      name: f.q,
-      acceptedAnswer: { "@type": "Answer", text: f.a },
-    })),
-  };
-
   return (
-    <section>
+    <section style={{ marginTop: "64px" }}>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <h2 className="text-2xl font-semibold mb-4">Vanliga frågor om moms</h2>
-      <div className="space-y-2">
+      <h2
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "28px",
+          fontWeight: 700,
+          marginBottom: "16px",
+        }}
+      >
+        Vanliga frågor om moms
+      </h2>
+      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {faqs.map((f, i) => (
-          <div
-            key={i}
-            className="bg-white rounded-xl border border-gray-200 overflow-hidden"
-          >
-            <button
-              onClick={() => setOpen(open === i ? null : i)}
-              className="w-full flex items-center justify-between px-5 py-4 text-left font-medium hover:bg-gray-50 transition"
-            >
-              {f.q}
-              <span className="ml-2 text-gray-400 text-xl leading-none">
-                {open === i ? "−" : "+"}
-              </span>
-            </button>
-            {open === i && (
-              <div className="px-5 pb-4 text-gray-600 text-sm">{f.a}</div>
-            )}
-          </div>
+          <details key={i}>
+            <summary>{f.q}</summary>
+            <div className="faq-answer">{f.a}</div>
+          </details>
         ))}
       </div>
     </section>

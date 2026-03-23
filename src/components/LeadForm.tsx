@@ -3,8 +3,10 @@
 import { useState } from "react";
 
 export default function LeadForm() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle"
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -13,77 +15,128 @@ export default function LeadForm() {
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ name: "–", email, message: "" }),
       });
       if (!res.ok) throw new Error();
       setStatus("sent");
-      setForm({ name: "", email: "", message: "" });
+      setEmail("");
     } catch {
       setStatus("error");
     }
   };
 
   return (
-    <section className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-      <h2 className="text-2xl font-semibold mb-2">Kontakta oss</h2>
-      <p className="text-gray-600 text-sm mb-4">
-        Har du frågor om moms eller vill du komma i kontakt? Fyll i formuläret
-        så hör vi av oss.
+    <section
+      style={{
+        marginTop: "64px",
+        background: "var(--accent)",
+        borderRadius: "var(--radius)",
+        padding: "40px 32px",
+        textAlign: "center",
+      }}
+    >
+      <h2
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "26px",
+          fontWeight: 700,
+          fontStyle: "italic",
+          color: "#fff",
+          marginBottom: "8px",
+        }}
+      >
+        Trött på bokföringen?
+      </h2>
+      <p
+        style={{
+          color: "rgba(255,255,255,0.8)",
+          fontSize: "14px",
+          marginBottom: "24px",
+          maxWidth: "400px",
+          margin: "0 auto 24px",
+          lineHeight: 1.6,
+        }}
+      >
+        Lämna din e-post så skickar vi tips om smarta verktyg för företagare.
       </p>
 
       {status === "sent" ? (
-        <p className="text-green-600 font-medium">Tack! Vi hör av oss snart.</p>
+        <p
+          style={{
+            color: "var(--highlight)",
+            fontWeight: 600,
+            fontSize: "15px",
+          }}
+        >
+          Tack! Vi hör av oss.
+        </p>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label htmlFor="lead-name" className="block text-sm font-medium text-gray-700 mb-1">
-              Namn
-            </label>
-            <input
-              id="lead-name"
-              type="text"
-              required
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label htmlFor="lead-email" className="block text-sm font-medium text-gray-700 mb-1">
-              E-post
-            </label>
-            <input
-              id="lead-email"
-              type="email"
-              required
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label htmlFor="lead-message" className="block text-sm font-medium text-gray-700 mb-1">
-              Meddelande (valfritt)
-            </label>
-            <textarea
-              id="lead-message"
-              rows={3}
-              value={form.message}
-              onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            display: "flex",
+            maxWidth: "420px",
+            margin: "0 auto",
+            gap: "8px",
+          }}
+        >
+          <input
+            type="email"
+            required
+            placeholder="din@email.se"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{
+              flex: 1,
+              padding: "12px 16px",
+              borderRadius: "var(--radius-pill)",
+              border: "2px solid rgba(255,255,255,0.3)",
+              background: "rgba(255,255,255,0.12)",
+              color: "#fff",
+              fontSize: "14px",
+              fontFamily: "var(--font-body)",
+              outline: "none",
+              transition: "border-color var(--transition)",
+            }}
+            onFocus={(e) =>
+              (e.currentTarget.style.borderColor = "var(--highlight)")
+            }
+            onBlur={(e) =>
+              (e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)")
+            }
+          />
           <button
             type="submit"
             disabled={status === "sending"}
-            className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition disabled:opacity-50"
+            className="hover-lift"
+            style={{
+              padding: "12px 24px",
+              borderRadius: "var(--radius-pill)",
+              border: "none",
+              background: "var(--highlight)",
+              color: "#1a1a1a",
+              fontWeight: 600,
+              fontSize: "14px",
+              cursor: "pointer",
+              transition: "all var(--transition)",
+              opacity: status === "sending" ? 0.6 : 1,
+              whiteSpace: "nowrap",
+            }}
           >
             {status === "sending" ? "Skickar..." : "Skicka"}
           </button>
-          {status === "error" && (
-            <p className="text-red-600 text-sm">Något gick fel. Försök igen.</p>
-          )}
         </form>
+      )}
+      {status === "error" && (
+        <p
+          style={{
+            color: "var(--highlight)",
+            fontSize: "13px",
+            marginTop: "12px",
+          }}
+        >
+          Något gick fel. Försök igen.
+        </p>
       )}
     </section>
   );
