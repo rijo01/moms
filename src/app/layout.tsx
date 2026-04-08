@@ -111,12 +111,22 @@ export default function RootLayout({
             <span>
               &copy; {new Date().getFullYear()} momsraknare.se
             </span>
-            <a
-              href="/integritetspolicy"
-              style={{ color: "var(--text-light)", fontSize: "13px" }}
-            >
-              Integritetspolicy
-            </a>
+            <nav style={{ display: "flex", gap: "16px" }}>
+              <a
+                href="/integritetspolicy"
+                style={{ color: "var(--text-light)", fontSize: "13px" }}
+              >
+                Integritetspolicy
+              </a>
+              <a
+                href="https://www.infofinder.se/redovisning/stockholm"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "var(--text-light)", fontSize: "13px" }}
+              >
+                Hitta redovisningsbyråer på InfoFinder
+              </a>
+            </nav>
           </div>
         </footer>
       </body>
