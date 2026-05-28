@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     q: "Måste alla företag ta ut moms?",
-    a: "Nej, företag med en omsättning under 80 000 kr per år kan ansöka om momsbefrielse. Vissa tjänster som sjukvård och utbildning är också momsbefriade.",
+    a: "Nej, företag vars omsättning inte överstiger 120 000 kr under innevarande beskattningsår, och inte heller har överstigit 120 000 kr något av de två närmast föregående beskattningsåren, kan ansöka om momsbefrielse. Gränsen höjdes från 80 000 kr den 1 januari 2025. Vissa tjänster som sjukvård och utbildning är också momsbefriade.",
   },
   {
     q: "Är momsräknaren gratis?",
