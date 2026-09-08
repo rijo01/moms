@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { GA_ID } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Momsräknare — Räkna ut moms enkelt | momsraknare.se",
@@ -129,6 +131,7 @@ export default function RootLayout({
             </nav>
           </div>
         </footer>
+        <GoogleAnalytics gaId={GA_ID} />
       </body>
     </html>
   );
